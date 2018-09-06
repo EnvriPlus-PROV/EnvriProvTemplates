@@ -9,8 +9,11 @@ A more detailed and formal description for the PROV template expansion mechanism
 
 
 Files:
+
 	provconv.py		: 	a library for performing template expansion
+
 	expandTemplate.py	:	a python script using provconv.py to emulate the functionality of provconvert using the -bindings argument
+
 	tests/			:	directory with test files, templates are *.trig, corresponding bindings *.ttl (check matching filenames)
 
 Example invocation: 
