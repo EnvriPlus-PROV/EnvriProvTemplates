@@ -1,0 +1,22 @@
+document
+  prefix foaf <http://xmlns.com/foaf/0.1/>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix uuid <urn:uuid:>
+  prefix xml <http://www.w3.org/XML/1998/namespace>
+  prefix rdfs <http://www.w3.org/2000/01/rdf-schema#>
+  prefix orcid <http://orcid.org/>
+  prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix ex <http://example.com/#>
+  prefix var <http://openprovenance.org/var#>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  bundle uuid:cf2a367f-5ac5-4ce2-9767-5399820c46ae
+    prefix orcid <http://orcid.org/>
+    prefix foaf <http://xmlns.com/foaf/0.1/>
+    prefix ex <http://example.com/#>
+    
+    entity(ex:quote1, [prov:value="A Little Provenance Goes a Long Way"])
+    entity(orcid:0000-0002-3494-120X, [prov:type='prov:Person', foaf:name="Luc Moreau"])
+    wasAttributedTo(ex:quote1, orcid:0000-0002-3494-120X)
+  endBundle
+endDocument

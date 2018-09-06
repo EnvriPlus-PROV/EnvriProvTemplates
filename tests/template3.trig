@@ -1,0 +1,23 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vargen: <http://openprovenance.org/vargen#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix tmpl: <http://openprovenance.org/tmpl#> .
+@prefix var: <http://openprovenance.org/var#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+
+vargen:bundleId {
+	var:quote a prov:Entity ;
+		prov:value var:value .
+	
+	var:author a prov:Entity , prov:Person ;
+		foaf:name var:name .
+	
+	var:quote prov:wasAttributedTo var:author .
+	
+	var:institution a prov:Entity .
+	
+	var:author prov:actedOnBehalfOf var:institution .
+}
