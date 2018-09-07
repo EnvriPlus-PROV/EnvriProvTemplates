@@ -22,39 +22,39 @@ A more detailed and formal description for the PROV template expansion mechanism
 
 ## Limitations:
 
-	FIXED: ~~ The current version has only been tested with python 2.7 and is currently also adapted to python 3 ~~
+FIXED: ~~ The current version has only been tested with python 2.7 and is currently also adapted to python 3 ~~
 
-	### python rdflib releated issues:
+### python rdflib releated issues:
 
-		rdflib applies stricter rules regarding IRIs, e.g. local names with leading digits are not allowed there
-		see https://github.com/RDFLib/rdflib/issues/742
+	rdflib applies stricter rules regarding IRIs, e.g. local names with leading digits are not allowed there
+	see https://github.com/RDFLib/rdflib/issues/742
 
-		If an IRI is provided as prefixed name, there is no problem, i.e.
+	If an IRI is provided as prefixed name, there is no problem, i.e.
 
-			@prefix orcid: <http://orcid.org/> 
-	
-			... some statement
-				tmpl:value_0	orcid:0000-0002-3494-120 .
+		@prefix orcid: <http://orcid.org/> 
+
+		... some statement
+			tmpl:value_0	orcid:0000-0002-3494-120 .
 
 
-		But if an IRI is provided in relative or absolute form, i.e
+	But if an IRI is provided in relative or absolute form, i.e
 
-			<http://orcid.org/0000-0002-3494-120X> or <http://orcid.org/0000-0002-3494-120>
+		<http://orcid.org/0000-0002-3494-120X> or <http://orcid.org/0000-0002-3494-120>
 
-		there will be problems.
+	there will be problems.
 
-			1) URIs such as <http://orcid.org/0000-0002-3494-120X> to be auto split into weird namespace:localname combinations such as
+		1) URIs such as <http://orcid.org/0000-0002-3494-120X> to be auto split into weird namespace:localname combinations such as
 
-				@prefix ns1: <http://orcid.org/0000-0002-3494-120> 
-				ns1:X
+			@prefix ns1: <http://orcid.org/0000-0002-3494-120> 
+			ns1:X
 
-			2) URIs such as <http://orcid.org/0000-0003-0183-6910>  fail completely with an exception "Can't split"
+		2) URIs such as <http://orcid.org/0000-0003-0183-6910>  fail completely with an exception "Can't split"
 
-		One possible workaround for such cases has been found to be to explicitly provide the namespaces for those IRIs containing leading digits in their local name, i.e.
+	One possible workaround for such cases has been found to be to explicitly provide the namespaces for those IRIs containing leading digits in their local name, i.e.
 
-		adding  @prefix orcid: <http://orcid.org/> to a bindings file
+	adding  @prefix orcid: <http://orcid.org/> to a bindings file
 
-		is sufficient for rdflib to correctly resolve the above issues.
+	is sufficient for rdflib to correctly resolve the above issues.
 
 
 ## Reference:
