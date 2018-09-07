@@ -8,7 +8,7 @@ For the specification of PROV-Template see https://provenance.ecs.soton.ac.uk/pr
 A more detailed and formal description for the PROV template expansion mechanism is provided in [1]
 
 
-Files:
+## Files:
 
 	provconv.py		: 	a library for performing template expansion
 
@@ -16,15 +16,15 @@ Files:
 
 	tests/			:	directory with test files, templates are *.trig, corresponding bindings *.ttl (check matching filenames)
 
-Example invocation: 
+## Sample invocation: 
 
 	python expandTemplate.py --infile tests/template1.trig --bindings tests/binding1.ttl --outfile tests/tb1_exp.provn
 
-Limitations:
+##Limitations:
 
 	FIXED: ~~The current version has only been tested with python 2.7 and is currently also adapted to python 3~~
 
-	python rdflib releated issues:
+	###python rdflib releated issues:
 
 		rdflib applies stricter rules regarding IRIs, e.g. local names with leading digits are not allowed there
 		see https://github.com/RDFLib/rdflib/issues/742
