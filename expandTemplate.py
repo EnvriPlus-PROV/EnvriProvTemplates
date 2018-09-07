@@ -12,22 +12,22 @@ import getopt
 import json
 
 def usage():
-	print "Usage:"
-	print "	python expandTemplate.py" 
-	print "	mandatory --infile   = <Template File (PROV-RDF [ttl, trig, xml], PROV-xml, PROV-json)>"
-	print "	-------------------------------------------"
-	print "	mandatory --bindings = <Bindings File (PROV-RDF [ttl, trig, xml], PROV-xml, PROV-json)>"
-	print "	alternat. --bindver3 --bindings=<Bindings File (JSON V3)>"
-	print "	-------------------------------------------"
-	print "		  --outfile  = <Bindings File (PROV-RDF [ttl, trig, xml], PROV-N, PROV-xml, PROV-json)>"
-	print "		  --help  : Show this message"
+	print ("Usage:")
+	print ("	python expandTemplate.py" )
+	print ("	mandatory --infile   = <Template File (PROV-RDF [ttl, trig, xml], PROV-xml, PROV-json)>")
+	print ("	-------------------------------------------")
+	print ("	mandatory --bindings = <Bindings File (PROV-RDF [ttl, trig, xml], PROV-xml, PROV-json)>")
+	print ("	alternat. --bindver3 --bindings=<Bindings File (JSON V3)>")
+	print ("	-------------------------------------------")
+	print ("		  --outfile  = <Bindings File (PROV-RDF [ttl, trig, xml], PROV-N, PROV-xml, PROV-json)>")
+	print ("		  --help  : Show this message")
 
 #make more formats available
 #template=prov.model.ProvDocument.deserialize(sys.argv[1], format="rdf", rdf_format="xml")
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "hi:o:b:v3", ["help", "infile=", "outfile=", "bindings=", "verbose", "bindver3"])
 except getopt.GetoptError as err:
-	print str(err)  # will print something like "option -a not recognized"
+	print (str(err))  # will print something like "option -a not recognized"
 	usage()
 	sys.exit(2)
 
