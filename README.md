@@ -20,11 +20,11 @@ A more detailed and formal description for the PROV template expansion mechanism
 
 	python expandTemplate.py --infile tests/template1.trig --bindings tests/binding1.ttl --outfile tests/tb1_exp.provn
 
-##Limitations:
+## Limitations:
 
-	FIXED: ~~The current version has only been tested with python 2.7 and is currently also adapted to python 3~~
+	FIXED: ~~ The current version has only been tested with python 2.7 and is currently also adapted to python 3 ~~
 
-	###python rdflib releated issues:
+	### python rdflib releated issues:
 
 		rdflib applies stricter rules regarding IRIs, e.g. local names with leading digits are not allowed there
 		see https://github.com/RDFLib/rdflib/issues/742
@@ -57,7 +57,7 @@ A more detailed and formal description for the PROV template expansion mechanism
 		is sufficient for rdflib to correctly resolve the above issues.
 
 
-Reference:
+## Reference:
 
 [1] L. Moreau, B. V. Batlajery, T. D. Huynh, D. Michaelides, and H. Packer, ‘A Templating System to Generate Provenance’, IEEE Transactions on Software Engineering, vol. 44, no. 2, pp. 103–121, Feb. 2018.
 
