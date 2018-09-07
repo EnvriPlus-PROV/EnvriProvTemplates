@@ -22,7 +22,7 @@ A more detailed and formal description for the PROV template expansion mechanism
 
 ## Limitations:
 
-FIXED: ~~ The current version has only been tested with python 2.7 and is currently also adapted to python 3 ~~
+FIXED: ~~The current version has only been tested with python 2.7 and is currently also adapted to python 3~~
 
 ### python rdflib releated issues:
 
@@ -41,9 +41,9 @@ FIXED: ~~ The current version has only been tested with python 2.7 and is curren
 
 		<http://orcid.org/0000-0002-3494-120X> or <http://orcid.org/0000-0002-3494-120>
 
-	there will be problems.
+	there will be problems if the namespace is not given explicitly
 
-		1) URIs such as <http://orcid.org/0000-0002-3494-120X> to be auto split into weird namespace:localname combinations such as
+		1) URIs such as <http://orcid.org/0000-0002-3494-120X> will be auto split into weird namespace:localname combinations such as
 
 			@prefix ns1: <http://orcid.org/0000-0002-3494-120> 
 			ns1:X
@@ -56,6 +56,9 @@ FIXED: ~~ The current version has only been tested with python 2.7 and is curren
 
 	is sufficient for rdflib to correctly resolve the above issues.
 
+### Python prov lib related issues
+
+	As for now, the python prov lib can only write provn but not read it. 
 
 ## Reference:
 
