@@ -20,6 +20,11 @@ Example invocation:
 
 	python expandTemplate.py --infile tests/template1.trig --bindings tests/binding1.ttl --outfile tests/tb1_exp.provn
 
+Limitations:
+
+	The current version has only been tested with python 2.7 and is currently also adapted to python 3
+
+
 Reference:
 
 [1] L. Moreau, B. V. Batlajery, T. D. Huynh, D. Michaelides, and H. Packer, ‘A Templating System to Generate Provenance’, IEEE Transactions on Software Engineering, vol. 44, no. 2, pp. 103–121, Feb. 2018.
