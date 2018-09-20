@@ -19,17 +19,18 @@ Author: Stephan Kindermann
 	Doron Goldfarb
 
 History: 
-      - version 0.1    (11. July 2018)
+      - version 0.1    (11. July 2018, Stephan)
         tests based on jinja templates and function based parametrization 
-      - version 0.2    (20. July)
+      - version 0.2    (20. July, Stephan)
         redesigned initial version using python prov to generate result instance.
-      - version 0.3    (26. July) 
+      - version 0.3    (26. July, Stephan) 
         + support for PROV instantiation files 
         + support for multiple entity expansion
       - version 0.4    (27. July)
         + support for attribute attribute expansion
         + support for provdocs without bundles
-      - version 0.5    (...)  
+      - version 0.5    (28. July, Stephan)  
+        + bundle support
         + application to concrete ENES use case
       - version 0.6    (28.8.2018, Doron Goldfarb)
 	+ support tmpl:linked

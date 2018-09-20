@@ -7,6 +7,12 @@ For the specification of PROV-Template see https://provenance.ecs.soton.ac.uk/pr
 
 A more detailed and formal description for the PROV template expansion mechanism is provided in [1]
 
+## Installation
+    clone repository
+    install dependencies: e.g. pip install prov[dot], (optional: conda install graphviz)
+    python setup.py install
+
+    
 
 ## Files:
 
@@ -19,6 +25,12 @@ A more detailed and formal description for the PROV template expansion mechanism
 ## Sample invocation: 
 
 	python expandTemplate.py --infile tests/template1.trig --bindings tests/binding1.ttl --outfile tests/tb1_exp.provn
+
+## Sample python usage:
+
+	from provtemplates import provconv
+
+	see First_Steps notebook
 
 ## Limitations:
 

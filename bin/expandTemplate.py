@@ -6,7 +6,7 @@ Author: Doron Goldfarb, Environment Agency Austria
 
 
 import sys
-import provconv
+from provtemplates import provconv
 import prov
 import getopt
 import json
