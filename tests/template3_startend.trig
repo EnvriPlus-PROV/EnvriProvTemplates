@@ -12,12 +12,31 @@ vargen:bundleId {
 	var:quote a prov:Entity ;
 		prov:value var:value .
 	
-	var:author a prov:Agent ;
-		foaf:name var:name .
+	var:author a prov:Agent, prov:Person ;
+		foaf:name var:name ;
+		tmpl:linked var:quote .
 	
 	var:quote prov:wasAttributedTo var:author .
 	
 	var:institution a prov:Entity .
 
+	var:someActivity a prov:Activity ;
+		tmpl:startTime var:actStarted;
+		tmpl:endTime var:actEnded.
+	
 	var:author prov:actedOnBehalfOf var:institution .
+
+
+	var:someActivity  prov:qualifiedUsage _:blank1 .
+
+	_:blank1 a prov:Usage;
+		prov:entity	 var:quote;
+		tmpl:time	 var:usageTime.
+
+	var:someActivity  prov:qualifiedStart [
+		rdf:type	prov:Start ;
+	 	prov:entity	var:quote ;
+		tmpl:time	var:startTime 
+	];
+	.	
 }

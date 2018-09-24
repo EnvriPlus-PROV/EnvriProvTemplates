@@ -1,0 +1,40 @@
+document
+  prefix foaf <http://xmlns.com/foaf/0.1/>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix uuid <http://www.umweltbundesamt.at/>
+  prefix xml <http://www.w3.org/XML/1998/namespace>
+  prefix rdfs <http://www.w3.org/2000/01/rdf-schema#>
+  prefix soton <http://www.soton.ac.uk/>
+  prefix var <http://openprovenance.org/var#>
+  prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix ex <http://example.com/#>
+  prefix orcid <http://orcid.org/>
+  prefix elsevier <http://labs.elsevier.com/>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  bundle uuid:f49df317-1bcb-4128-acd4-b967b443b305
+    prefix orcid <http://orcid.org/>
+    prefix foaf <http://xmlns.com/foaf/0.1/>
+    prefix soton <http://www.soton.ac.uk/>
+    prefix ex <http://example.com/#>
+    prefix elsevier <http://labs.elsevier.com/>
+    
+    entity(ex:quote1, [prov:value="A Little Provenance Goes a Long Way"])
+    entity(ex:quote2, [prov:value="... and More Provenance Goes Even Further"])
+    agent(orcid:0000-0002-3494-120X, [prov:type='prov:Person', foaf:name="Luc Moreau"])
+    agent(orcid:0000-0003-0183-6910, [prov:type='prov:Person', foaf:name="Paul Groth"])
+    entity(soton:)
+    entity(elsevier:)
+    activity(ex:theActivity, 2002-09-24T00:00:00, 2002-09-27T00:00:00)
+    actedOnBehalfOf(orcid:0000-0002-3494-120X, soton:, -)
+    actedOnBehalfOf(orcid:0000-0002-3494-120X, elsevier:, -)
+    actedOnBehalfOf(orcid:0000-0003-0183-6910, soton:, -)
+    actedOnBehalfOf(orcid:0000-0003-0183-6910, elsevier:, -)
+    wasAttributedTo(ex:quote1, orcid:0000-0002-3494-120X)
+    wasAttributedTo(ex:quote2, orcid:0000-0003-0183-6910)
+    used(ex:theActivity, ex:quote1, 2012-09-24T00:00:00)
+    used(ex:theActivity, ex:quote2, 2012-09-24T00:00:00)
+    wasStartedBy(ex:theActivity, ex:quote1, -, 2012-09-23T00:00:00)
+    wasStartedBy(ex:theActivity, ex:quote2, -, 2012-09-23T00:00:00)
+  endBundle
+endDocument

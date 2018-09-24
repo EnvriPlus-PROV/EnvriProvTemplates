@@ -508,17 +508,30 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 	attrlists=[]
 	indexlists=[]
 	#separate attribute values by group, but remember their original order in ilist
+	attrVisited=[]
 	for g in linkedRelAttrs:
 		alist=[]
 		ilist=[]
 		cnt=0
 		for a in expAttr:
 			if a in g:
+				attrVisited.append(a)
 				alist.append(expAttr[a])
 				ilist.append(cnt)
 			cnt+=1
 		attrlists.append(alist)
 		indexlists.append(ilist)
+	
+	#Some of the variables were not present in the linked groups.
+	if len(attrVisited)!=len(expAttr):
+		cnt=0
+		for a in expAttr:
+			if a not in attrVisited:
+				attrlists.append([expAttr[a]])
+				indexlists.append([cnt])
+				attrVisited.append(a)
+			cnt+=1
+	
 	
 	#print (repr(expAttr))
 	#print (repr(attrlists))
@@ -808,12 +821,29 @@ def add_records(old_entity, new_entity, instance_dict):
 
 
 		#print(repr(instance_dict))
-		props = attr_match(attr,instance_dict)
-		#print ("-------------------")
-		#print (repr(neid))
-		#print ("-------------------")
-		#print (repr(props))
+		props_raw = attr_match(attr,instance_dict)
+		props=dict()
+		#eliminate tmpl:linked
+		for p in props_raw:
+			if "tmpl:linked"!=p._str:
+				props[p]=props_raw[p]
+	
+		"""	
+		print ("-------------------")
+		print (repr(rec))
+		print (rec)
+		print (rec.get_asserted_types())
+		print (rec.get_type())
+		print ("######################")
+		print (repr(eid))
+		print (repr(neid))
+		print (repr(props))
+		print (repr(args))
+		print ("-------------------")
+		"""
 		#here we cann inject vargen things if there is a linked attr 
+
+
 		if isinstance(neid,list):
 			i = 0
 			for n in neid: 
@@ -829,7 +859,10 @@ def add_records(old_entity, new_entity, instance_dict):
 					else:
 						otherAttr.append(tuple([ea1, oa[ea1]]))
 			#print (n)
-				new_node = new_entity.entity(n,other_attributes=otherAttr)
+				newRec=prov.ProvRecord(rec.bundle, n,attributes=otherAttr)
+				newRec._prov_type=rec.get_type()
+				#print (newRec)
+				new_node = new_entity.add_record(newRec)
 				#new_node = new_entity.entity(prov.Identifier(n),other_attributes=prop_select(props,i))
 				i += 1
 		else:
@@ -838,11 +871,17 @@ def add_records(old_entity, new_entity, instance_dict):
 			#print (instance_dict)
 			#print (numInstances)
 			#print (linkedGroups)
-			new_node = new_entity.entity(neid,other_attributes=props)
+			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=props)
+			newRec._prov_type=rec.get_type()
+			#print (newRec)
+			new_node = new_entity.add_record(newRec)
 			#new_node = new_entity.entity(prov.Identifier(neid),other_attributes=props)
 
 	for rel in relations:
+		#print (rel)
 
+		#translate any tmpl entries
+		
 
 		#print (repr(rel))
 		#print (repr(rel.attributes))
@@ -850,6 +889,8 @@ def add_records(old_entity, new_entity, instance_dict):
 		#expand all possible formal attributes
 		linkedMatrix=collections.OrderedDict()
 		expAttr=collections.OrderedDict()
+
+		
 
 		for fa1 in rel.formal_attributes:
 			linkedMatrix[fa1[0]]=collections.OrderedDict()
@@ -863,7 +904,17 @@ def add_records(old_entity, new_entity, instance_dict):
 				if not isinstance(expAttr[fa1[0]], list):
 					expAttr[fa1[0]]=[expAttr[fa1[0]]]
 			else:
-				expAttr[fa1[0]]=[None]
+				#SPECUIAL CASE: prov:timea
+				if fa1[0]._str=="prov:time":
+					expAttr[fa1[0]]=[None]
+					for ea1 in rel.extra_attributes:
+						if ea1[0]._str=="tmpl:time":
+							expAttr[fa1[0]]=match(ea1[1], instance_dict, False) 
+							if not isinstance(expAttr[fa1[0]], list):
+								expAttr[fa1[0]]=[expAttr[fa1[0]]]
+							
+				else:
+					expAttr[fa1[0]]=[None]
 
 		#dont forget extra attrs. these are not expanded but taken as is.
 		
@@ -898,13 +949,14 @@ def add_records(old_entity, new_entity, instance_dict):
 	#dont forget extra attrs
 		otherAttr=list()
 		for ea1 in rel.extra_attributes:
-			ea1_match=match(ea1[1], instance_dict, False)
-			if isinstance(ea1_match, list):
-				for a in ea1_match:
-					otherAttr.append(tuple([ea1[0], a]))
-			else:
-				otherAttr.append(tuple([ea1[0], ea1_match]))
-	
+			if ea1[0]._str != "tmpl:time":
+				ea1_match=match(ea1[1], instance_dict, False)
+				if isinstance(ea1_match, list):
+					for a in ea1_match:
+						otherAttr.append(tuple([ea1[0], a]))
+				else:
+					otherAttr.append(tuple([ea1[0], ea1_match]))
+		
 		idents=match(rel.identifier, instance_dict, False)
 
 		#We need to check if instances are linked    
@@ -969,6 +1021,10 @@ def attr_match(attr_list,mdict):
 		mdict (dict): matching dictionary
 
 	ToDo: improve attr_match and match first version helper functions    
+
+
+		#TO DO: STARTTIME ENDTIME TIME
+
 	'''      
 	p_dict = {}
 	for (pn,pv)  in attr_list:
@@ -1006,6 +1062,11 @@ def instantiate_template(prov_doc,instance_dict):
 
 	#print("here inst templ")
 
+
+	#instance dict override: replace tmpl:startTime and tmpl:endTime with prov:startTime and prov:endTime
+	instance_dict["tmpl:startTime"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"),"startTime")
+	instance_dict["tmpl:endTime"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"),"endTime")
+	instance_dict["tmpl:time"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"), "time")
 
 	#CHECK FOR NAMESPACE FOR VARGEN UUID
 	for ns in prov_doc.namespaces:
