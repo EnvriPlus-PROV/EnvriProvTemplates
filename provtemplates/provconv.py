@@ -871,7 +871,16 @@ def add_records(old_entity, new_entity, instance_dict):
 			#print (instance_dict)
 			#print (numInstances)
 			#print (linkedGroups)
-			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=props)
+			#print (repr(props))
+			newprop=list()
+			for p in props:
+				if isinstance(props[p], list):
+					for a in props[p]:
+						newprop.append(tuple([p, a]))
+				else:
+					newprop.append(tuple([p, props[p]]))
+			#print (repr(newprop))
+			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=newprop)
 			newRec._prov_type=rec.get_type()
 			#print (newRec)
 			new_node = new_entity.add_record(newRec)
@@ -1067,6 +1076,8 @@ def instantiate_template(prov_doc,instance_dict):
 	instance_dict["tmpl:startTime"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"),"startTime")
 	instance_dict["tmpl:endTime"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"),"endTime")
 	instance_dict["tmpl:time"]=prov.QualifiedName(prov.Namespace("prov", "http://www.w3.org/ns/prov#"), "time")
+
+	#print repr(instance_dict)
 
 	#CHECK FOR NAMESPACE FOR VARGEN UUID
 	for ns in prov_doc.namespaces:
