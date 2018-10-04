@@ -1,0 +1,16 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix tmpl: <http://openprovenance.org/tmpl#> .
+@prefix var: <http://openprovenance.org/var#> .
+@prefix orcid: <http://orcid.org/> .
+@prefix d4science: <https://data.d4science.org/> .
+
+var:image a prov:Entity ;
+  tmpl:value_0 <https://data.d4science.org/MzhkMUdQZmRrSkxOc2kzWHA0amdlNlZTbW5yRWdGdUZHbWJQNStIS0N6Yz0> .
+var:data a prov:Entity ;
+  tmpl:value_0 <https://data.d4science.org/K0JMcUorTjJib1Bka0hVdDI4SmU5N21wQmpubHBJOXdHbWJQNStIS0N6Yz0> .
+var:researcher a prov:Entity ;
+  tmpl:value_0 orcid:0000-0001-5492-3212 .
+var:t1 a prov:Entity ;
+	tmpl:value_0 "2018-09-28T14:59:27.177710+02:00" . 
+var:t2 a prov:Entity ;
+	tmpl:value_0 "2018-09-28T14:59:27.177710+02:00" .

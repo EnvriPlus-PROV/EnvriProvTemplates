@@ -1,0 +1,35 @@
+document
+  prefix xml <http://www.w3.org/XML/1998/namespace>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix uuid <urn:uuid:>
+  prefix rdfs <http://www.w3.org/2000/01/rdf-schema#>
+  prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix ex <http://example.com#>
+  prefix var <http://openprovenance.org/var#>
+  prefix dct <http://purl.org/dc/terms/>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  bundle uuid:0a2f4154-ea60-4f99-8107-2ee9a41da9d6
+    prefix ex <http://example.com#>
+    prefix uuid <urn:uuid:>
+    
+    agent(ex:NP_Kalkalpen, [prov:type='prov:Organization'])
+    entity(uuid:0ba970ec-83c9-42a1-952c-5ad7322699b3, [prov:type="DendrometerReading", ex:comment="", prov:value="7"])
+    activity(uuid:56506c6a-1f45-49b0-bd8a-e2a94144d762, -, -, [prov:type="DendrometerMeasurementActivity", prov:location='ex:5001'])
+    entity(ex:2018-05-09T00_00_00, [prov:type="Dataset"])
+    activity(uuid:3694b3b7-87c3-41e7-a33a-32a99cf942bd, -, -, [prov:type="DendrometerReadingActivity", prov:location='ex:27'])
+    agent(ex:Kettenhummer, [prov:type='prov:Person'])
+    entity(uuid:e97424f5-ec0d-491e-8a7a-0650d964f100, [prov:type="DendrometerMeasurement"])
+    entity(ex:dendrometerMeasurementMethodology, [prov:type='prov:plan'])
+    agent(ex:27, [prov:type="Dendrometer"])
+    wasAssociatedWith(uuid:3694b3b7-87c3-41e7-a33a-32a99cf942bd, ex:Kettenhummer, -)
+    used(uuid:3694b3b7-87c3-41e7-a33a-32a99cf942bd, uuid:e97424f5-ec0d-491e-8a7a-0650d964f100, -)
+    wasGeneratedBy(uuid:e97424f5-ec0d-491e-8a7a-0650d964f100, uuid:56506c6a-1f45-49b0-bd8a-e2a94144d762, -)
+    wasGeneratedBy(uuid:0ba970ec-83c9-42a1-952c-5ad7322699b3, uuid:3694b3b7-87c3-41e7-a33a-32a99cf942bd, -)
+    hadMember(ex:2018-05-09T00_00_00, uuid:0ba970ec-83c9-42a1-952c-5ad7322699b3)
+    wasAttributedTo(uuid:0ba970ec-83c9-42a1-952c-5ad7322699b3, ex:Kettenhummer)
+    actedOnBehalfOf(ex:Kettenhummer, ex:NP_Kalkalpen, -)
+    wasDerivedFrom(uuid:0ba970ec-83c9-42a1-952c-5ad7322699b3, uuid:e97424f5-ec0d-491e-8a7a-0650d964f100, -, -, -)
+    wasAssociatedWith(uuid:388e3a9d-ef66-44ce-9db5-2344de3938ac; uuid:56506c6a-1f45-49b0-bd8a-e2a94144d762, ex:27, ex:dendrometerMeasurementMethodology)
+  endBundle
+endDocument

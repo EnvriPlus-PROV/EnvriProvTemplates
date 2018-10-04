@@ -1,0 +1,33 @@
+document
+  prefix xml <http://www.w3.org/XML/1998/namespace>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix uuid <urn:uuid:>
+  prefix rdfs <http://www.w3.org/2000/01/rdf-schema#>
+  prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix ex <http://example.org/>
+  prefix var <http://openprovenance.org/var#>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  bundle uuid:5ca847e1-0a69-4a0c-9b8b-f656ffd3b904
+    prefix ex <http://example.org/>
+    prefix uuid <urn:uuid:>
+    
+    activity(uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, 2012-01-07T00:00:00, -)
+    agent(ex:agent1)
+    entity(ex:entity1)
+    entity(ex:entity2)
+    entity(ex:entity3)
+    entity(ex:entity4)
+    entity(ex:entity5)
+    entity(ex:entity6)
+    entity(ex:entity7)
+    wasGeneratedBy(ex:entity1, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity2, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity3, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity4, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity5, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity6, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasGeneratedBy(ex:entity7, uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, -)
+    wasAssociatedWith(uuid:d28c141c-62ef-4c8f-9cf8-28afcd222958, ex:agent1, -)
+  endBundle
+endDocument

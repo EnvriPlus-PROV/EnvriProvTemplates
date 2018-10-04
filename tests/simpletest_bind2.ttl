@@ -1,0 +1,21 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix var: <http://openprovenance.org/var#> .
+@prefix vargen: <http://openprovenance.org/vargen#> .
+@prefix tmpl: <http://openprovenance.org/tmpl#> .
+@prefix ex: <http://example.org/> .
+
+
+var:agent a prov:Entity ;
+        tmpl:value_0 ex:agent1 .
+
+var:startTime a prov:Entity ;
+        tmpl:2dvalue_0_0 "20120107" .
+
+var:entity a prov:Entity ;
+        tmpl:value_0 ex:entity1 ;
+        tmpl:value_1 ex:entity2 ;
+        tmpl:value_2 ex:entity3 ;
+        tmpl:value_3 ex:entity4 ;
+        tmpl:value_4 ex:entity5 ;
+        tmpl:value_5 ex:entity6 ;
+        tmpl:value_6 ex:entity7 .

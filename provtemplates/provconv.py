@@ -879,7 +879,10 @@ def add_records(old_entity, new_entity, instance_dict):
 						newprop.append(tuple([p, a]))
 				else:
 					newprop.append(tuple([p, props[p]]))
-			#print (repr(newprop))
+			print (repr(newprop))
+			print (rec.bundle)
+			print (prov.Identifier(neid))
+			
 			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=newprop)
 			newRec._prov_type=rec.get_type()
 			#print (newRec)
@@ -1039,8 +1042,14 @@ def attr_match(attr_list,mdict):
 	for (pn,pv)  in attr_list:
 		#print ("pn: " + repr(pn) + " pv: " + repr(pv))
 		npn_new = match(pn,mdict, False)
+		#for now, only take first list ele if npn_mew is list
 		#print ("npn_new: " + repr(npn_new))
-		p_dict[npn_new] = match(pv,mdict, False)
+		if isinstance(npn_new, list):
+			npn_new=npn_new[0]
+		#print ("npn_new: " + repr(npn_new))
+		res=match(pv,mdict, False)
+		#print ("res: " + repr(res))
+		p_dict[npn_new] = res
 		#print("Attr dict:",p_dict)
 	return p_dict 
 #---------------------------------------------------------------

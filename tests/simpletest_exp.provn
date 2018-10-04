@@ -1,0 +1,45 @@
+document
+  prefix xml <http://www.w3.org/XML/1998/namespace>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix uuid <urn:uuid:>
+  prefix rdfs <http://www.w3.org/2000/01/rdf-schema#>
+  prefix rdf <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix ex <http://example.org/>
+  prefix var <http://openprovenance.org/var#>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  bundle uuid:81c19b6c-db7f-4838-b294-a5cbb0ebbc50
+    prefix uuid <urn:uuid:>
+    prefix ex <http://example.org/>
+    
+    activity(uuid:866a1bf5-19eb-4a6f-88f9-64fa7b8d29f4, 2012-01-01T00:00:00, -)
+    activity(uuid:b7ae31b3-438e-4482-9b7f-45f6614af82a, 2012-01-02T00:00:00, -)
+    activity(uuid:9a73c1ee-2915-4c71-a732-104d8def8b72, 2012-01-03T00:00:00, -)
+    activity(uuid:213795f8-a3bc-4ab0-bd4d-45d1cfce94d7, 2012-01-04T00:00:00, -)
+    activity(uuid:267da1e4-eef1-4653-ba1b-adf950a77a70, 2012-01-05T00:00:00, -)
+    activity(uuid:9a2a14ee-351c-4a92-938f-17de9ddaf4d1, 2012-01-06T00:00:00, -)
+    activity(uuid:a80f5972-fe50-4f44-a75c-493108a905f3, 2012-01-07T00:00:00, -)
+    entity(ex:entity1)
+    entity(ex:entity2)
+    entity(ex:entity3)
+    entity(ex:entity4)
+    entity(ex:entity5)
+    entity(ex:entity6)
+    entity(ex:entity7)
+    agent(ex:agent1)
+    wasGeneratedBy(ex:entity1, uuid:866a1bf5-19eb-4a6f-88f9-64fa7b8d29f4, -)
+    wasGeneratedBy(ex:entity2, uuid:b7ae31b3-438e-4482-9b7f-45f6614af82a, -)
+    wasGeneratedBy(ex:entity3, uuid:9a73c1ee-2915-4c71-a732-104d8def8b72, -)
+    wasGeneratedBy(ex:entity4, uuid:213795f8-a3bc-4ab0-bd4d-45d1cfce94d7, -)
+    wasGeneratedBy(ex:entity5, uuid:267da1e4-eef1-4653-ba1b-adf950a77a70, -)
+    wasGeneratedBy(ex:entity6, uuid:9a2a14ee-351c-4a92-938f-17de9ddaf4d1, -)
+    wasGeneratedBy(ex:entity7, uuid:a80f5972-fe50-4f44-a75c-493108a905f3, -)
+    wasAssociatedWith(uuid:866a1bf5-19eb-4a6f-88f9-64fa7b8d29f4, ex:agent1, -)
+    wasAssociatedWith(uuid:b7ae31b3-438e-4482-9b7f-45f6614af82a, ex:agent1, -)
+    wasAssociatedWith(uuid:9a73c1ee-2915-4c71-a732-104d8def8b72, ex:agent1, -)
+    wasAssociatedWith(uuid:213795f8-a3bc-4ab0-bd4d-45d1cfce94d7, ex:agent1, -)
+    wasAssociatedWith(uuid:267da1e4-eef1-4653-ba1b-adf950a77a70, ex:agent1, -)
+    wasAssociatedWith(uuid:9a2a14ee-351c-4a92-938f-17de9ddaf4d1, ex:agent1, -)
+    wasAssociatedWith(uuid:a80f5972-fe50-4f44-a75c-493108a905f3, ex:agent1, -)
+  endBundle
+endDocument

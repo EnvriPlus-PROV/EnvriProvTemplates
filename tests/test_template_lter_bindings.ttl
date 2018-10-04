@@ -1,0 +1,23 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix tmpl: <http://openprovenance.org/tmpl#> .
+@prefix var: <http://openprovenance.org/var#> .
+@prefix ex: <http://example.com#> .
+var:dendrometer a prov:Entity ;
+tmpl:value_0 ex:27 .
+var:tree a prov:Entity ;
+tmpl:2dvalue_0_0 ex:5001 .
+var:dendroPlan a prov:Entity ;
+tmpl:value_0 ex:dendrometerMeasurementMethodology .
+var:organization a prov:Entity ;
+tmpl:value_0 ex:NP_Kalkalpen .
+var:readingAgent a prov:Entity ;
+tmpl:value_0 ex:Kettenhummer .
+var:comment a prov:Entity ;
+tmpl:2dvalue_0_0 "" .
+var:readValue a prov:Entity ;
+tmpl:2dvalue_0_0 "7" .
+var:endDate a prov:Entity ;
+tmpl:value_0 "2018-05-09T00:00:00" .
+var:dataset a prov:Entity ;
+tmpl:value_0 ex:2018-05-09T00_00_00 .
+
