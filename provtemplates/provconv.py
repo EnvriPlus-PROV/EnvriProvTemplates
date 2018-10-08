@@ -132,19 +132,24 @@ def setEntry(rec, regNS):
 	try:
 		if "@id" in rec:
 			toks=rec["@id"].split(":")
+			#print (repr(toks))
 			if len(toks) > 2:
-				print( "Invalid Qualified Name " + rec["@id"] + " found in V3 Json Binding" )
-			for ns in regNS.get_registered_namespaces():
+				raise BindingFileException( "Invalid Qualified Name " + rec["@id"] + " found in V3 Json Binding " +  repr(rec))
+				#print( "Invalid Qualified Name " + rec["@id"] + " found in V3 Json Binding" )
+			#for ns in regNS.get_registered_namespaces():
+			for ns in regNS:
+				#print (ns)
 				if ns.prefix==toks[0]:
-					out=prov.model.QualifiedName(ns, toks[1])	
+					#print ("HIT")
+					out=prov.QualifiedName(ns, toks[1])	
 		if "@value" in rec:
 			if "@type" in rec:
-				out=prov.model.Literal(rec["@value"], datatype=rec["@type"])	
+				out=prov.Literal(rec["@value"], datatype=rec["@type"])	
 			else:
 				out=rec["@value"]
 	except:
-		#raise BindingFileException("Error parsing " + repr(rec))
-		pass
+		raise BindingFileException("Error parsing " + repr(rec))
+		#pass
 	return out
 
 def read_binding_v3(v3_dict):
@@ -156,25 +161,25 @@ def read_binding_v3(v3_dict):
 		internal bindingings dict
 	"""
 	bindings_dict=dict()
+	namespaces=set()
 	if "context" in v3_dict:
 		#print v3_dict["context"]
-		namespaces=set()
 		for k in v3_dict["context"]:
-			namespaces.add(prov.model.Namespace(k, v3_dict["context"][k]))	
-		template=provconv.set_namespaces(namespaces, template)
+			namespaces.add(prov.Namespace(k, v3_dict["context"][k]))	
 	if "var" in v3_dict:	
 		for v in v3_dict["var"]:
 			val=list()
 			for rec in v3_dict["var"][v]:
-				val.append(setEntry(rec, template._namespaces))
+				#print(repr(val))
+				val.append(setEntry(rec, namespaces))
 			bindings_dict["var:"+v]=val
 	if "vargen" in v3_dict:	
 		for v in v3_dict["vargen"]:
 			val=list()
 			for rec in v3_dict["vargen"][v]:
-				val.append(setEntry(rec, template._namespaces))
+				val.append(setEntry(rec, namespaces))
 			bindings_dict["vargen:"+v]=val
-	return(bindings_dict)	
+	return({ "binddict" : bindings_dict,  "namespaces" : namespaces})	
 
 
 def read_binding(bindings_doc):
