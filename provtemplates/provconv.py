@@ -413,8 +413,12 @@ def make_rel(new_entity,rel,ident, formalattrs, otherAttrs):
 
 	"""
 	new_rel=None
+
+	#print (ident)
+	#print (formalattrs)
+
 	#handle expansion
-	#print otherAttrs 
+	#print (otherAttrs)
 
 	if rel.get_type() == prov.PROV_ATTRIBUTION:
 		new_rel = new_entity.wasAttributedTo(identifier=ident, other_attributes=otherAttrs, *formalattrs)
@@ -558,8 +562,17 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 
 	cnt=0
 	#iterate over cartesian product
+
+	#print (repr(relList))
+
 	for element in relList:
+		
+		#print (element)
+		
 		out=flatten(element)
+
+		#print (out)
+
 		#reorder based on original ordering
 		outordered=[out[i] for i in idx]
 		#create expanded relation	
@@ -890,7 +903,7 @@ def add_records(old_entity, new_entity, instance_dict):
 			
 			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=newprop)
 			newRec._prov_type=rec.get_type()
-			#print (newRec)
+			print (newRec)
 			new_node = new_entity.add_record(newRec)
 			#new_node = new_entity.entity(prov.Identifier(neid),other_attributes=props)
 
