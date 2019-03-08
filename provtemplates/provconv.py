@@ -66,6 +66,13 @@ import itertools
 import uuid
 import sys
 import collections
+import logging
+
+
+handler = logging.StreamHandler(stream=sys.stderr)
+log=logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+log.addHandler(handler)
 
 #This is the prefix searched for in the passed prov template namespaces in order to identify
 #the custom namespace dedicated to vargen identifiers.
@@ -557,8 +564,12 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 	#we need this info to maintain the order of formal attributes
 	idx=flatten(indexlists)	
 
+	log.debug("OUTLISTS")
+	log.debug(outLists)
+
 	#create cartesian product of grouped variables, this way, only those not in the same group get expanded
-	relList=itertools.product(*outLists)
+	relList=list(itertools.product(*outLists))
+	log.debug(relList)
 
 	cnt=0
 	#iterate over cartesian product
@@ -566,6 +577,27 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 	#print (repr(relList))
 
 	for element in relList:
+		log.debug("MEH")
+		log.debug(repr(element))
+		log.debug(repr(otherAttrs))
+
+
+		# CONSTRUCT OTHER ATTRS FOR THIS REL
+		rel_other_attrs=dict()
+		for k in otherAttrs:
+			log.debug(repr(otherAttrs[k]))
+			oa_eles=1
+			if isinstance(otherAttrs[k], list):
+				oa_eles=len(otherAttrs[k])
+			if oa_eles!=1 and oa_eles < len(relList):
+				raise IncorrectNumberOfBindingsForStatementVariable("Attribute " + str(k) + " has incorrect number of bindings.")
+			kval=None
+			if oa_eles==1:
+				kval=otherAttrs[k]
+			else:
+				kval=otherAttrs[k][cnt]
+			rel_other_attrs[k]=kval
+			
 		
 		#print (element)
 		
@@ -577,11 +609,11 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 		outordered=[out[i] for i in idx]
 		#create expanded relation	
 		if getIdent:
-			make_rel(new_entity, rel,idents[cnt], outordered, otherAttrs)
+			make_rel(new_entity, rel,idents[cnt], outordered, rel_other_attrs)
 		elif makeUUID:
-			make_rel(new_entity, rel, prov.QualifiedName(GLOBAL_UUID_DEF_NS, str(uuid.uuid4())), outordered, otherAttrs)
+			make_rel(new_entity, rel, prov.QualifiedName(GLOBAL_UUID_DEF_NS, str(uuid.uuid4())), outordered, rel_other_attrs)
 		else:
-			make_rel(new_entity, rel,idents, outordered, otherAttrs)
+			make_rel(new_entity, rel,idents, outordered, rel_other_attrs)
 		cnt+=1
 
 def checkLinked(nodes, instance_dict):
@@ -843,6 +875,8 @@ def add_records(old_entity, new_entity, instance_dict):
 		props=dict()
 		#eliminate tmpl:linked
 		for p in props_raw:
+			log.debug(type(p))
+			log.debug(repr(p))
 			if "tmpl:linked"!=p._str:
 				props[p]=props_raw[p]
 	
@@ -900,7 +934,10 @@ def add_records(old_entity, new_entity, instance_dict):
 			print (repr(newprop))
 			print (rec.bundle)
 			print (prov.Identifier(neid))
-			
+		
+			#DG NEW: WE MUST CORRECTLY EXPAND NESTED ATTRS HERE
+
+	
 			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=newprop)
 			newRec._prov_type=rec.get_type()
 			print (newRec)
@@ -921,7 +958,7 @@ def add_records(old_entity, new_entity, instance_dict):
 		expAttr=collections.OrderedDict()
 
 		
-
+		
 		for fa1 in rel.formal_attributes:
 			linkedMatrix[fa1[0]]=collections.OrderedDict()
 			for fa2 in rel.formal_attributes:
@@ -974,24 +1011,59 @@ def add_records(old_entity, new_entity, instance_dict):
 				break
 
 		(nfirst,nsecond) = (match(args[0],instance_dict, False),match(args[1],instance_dict, False))     
+		log.debug("NEW REL")
+		log.debug((nfirst,nsecond))
+		#print(repr(instance_dict))
+		log.debug(repr(rel.extra_attributes))
+		relprops_raw = attr_match(rel.extra_attributes, instance_dict)
+		relprops=dict()
+		log.debug(repr(relprops_raw))
+		#eliminate tmpl:linked
+		for relp in relprops_raw:
+			log.debug(type(relp))
+			log.debug(repr(relp))
+			if "tmpl:linked"!=relp._str:
+				log.debug(repr(relprops_raw[relp]))
+				props[relp]=relprops_raw[relp]
 
 
-	#dont forget extra attrs
-		otherAttr=list()
-		for ea1 in rel.extra_attributes:
-			if ea1[0]._str != "tmpl:time":
-				ea1_match=match(ea1[1], instance_dict, False)
-				if isinstance(ea1_match, list):
-					for a in ea1_match:
-						otherAttr.append(tuple([ea1[0], a]))
-				else:
-					otherAttr.append(tuple([ea1[0], ea1_match]))
+		# WE MOVE THAT TO THE POINT WHERE WE NOW HOW MANY RELS WE HAVE FOR THE VAR PAIR
+
+		##dont forget extra attrs
+		## we need to rerrange this into 
+		#otherAttr=list()
+		#for ea1 in props:
+		#	log.info(repr(ea1))
+		#	if ea1._str != "tmpl:time":
+		#		#DG NEW: #we can have multiple cases now
+		#		#if the other attr tuple is "fix"/"var", then ... it depends on the state of the link. If its projection
+		#
+		#		#should be relatively simple:
+		#		# if provided as simple list, then the attrs are expected to apply to all the connected instances
+		#
+		#		#if the other attr tuple is "var/var", its more complicated
+		#		
+		#		# imagine multiple cases
+		#
+		#		key_match=match(ea1[0], instance_dict, False)
+		#		va1_match=match(ea1[1], instance_dict, False)
+		#		if isinstance(key_match, list):
+		#			for a in ea1_match:
+		#				otherAttr.append(tuple([ea1[0], a]))
+		#		else:
+		#			otherAttr.append(tuple([ea1[0], ea1_match]))
+
+		##dont forget that the key can also be a variable
+		
 		
 		idents=match(rel.identifier, instance_dict, False)
-
+		log.debug(repr(idents))
+		log.debug(repr(expAttr))
+		log.debug(repr(linkedRelAttrs))
 		#We need to check if instances are linked    
-		new_rel = set_rel(new_entity,rel,idents, expAttr,linkedRelAttrs, otherAttr)        
-		#new_rel = set_rel_o(new_entity,rel,nfirst,nsecond, linked)        
+		new_rel = set_rel(new_entity,rel,idents, expAttr,linkedRelAttrs, relprops_raw)        
+		#new_rel = set_rel(new_entity,rel,idents, expAttr,linkedRelAttrs, otherAttr)        
+		##new_rel = set_rel_o(new_entity,rel,nfirst,nsecond, linked)        
 	return new_entity   
 
 
@@ -1059,15 +1131,34 @@ def attr_match(attr_list,mdict):
 	p_dict = {}
 	for (pn,pv)  in attr_list:
 		#print ("pn: " + repr(pn) + " pv: " + repr(pv))
-		npn_new = match(pn,mdict, False)
+		key_new = match(pn,mdict, False)
+		val_new = match(pv,mdict, False)
 		#for now, only take first list ele if npn_mew is list
 		#print ("npn_new: " + repr(npn_new))
-		if isinstance(npn_new, list):
-			npn_new=npn_new[0]
+		key_list=list()
+		if isinstance(key_new, list):
+			key_list=key_new
+		else:
+			key_list.append(key_new)
 		#print ("npn_new: " + repr(npn_new))
-		res=match(pv,mdict, False)
-		#print ("res: " + repr(res))
-		p_dict[npn_new] = res
+		#val_list=list()
+		#val_list.append(val_new)
+		val_list=list()
+		if isinstance(val_new, list):
+			val_list=val_new
+		else:
+			val_list.append(val_new)
+
+		if len(key_list)!=1 and len(key_list)!=len(val_list):
+			raise ValueError("Key and value list " + repr((pn,pv)) + " contains uneqal number of elements " + repr(key_list) + " " + repr(val_list))
+
+		for i in range(0,len(val_list)):
+			#res=match(val_list[i],mdict, False)
+			#print ("res: " + repr(res))
+			j=i
+			#if len(key_list)>1:
+			#	j=i
+			p_dict[key_list[j]] = val_list[i]
 		#print("Attr dict:",p_dict)
 	return p_dict 
 #---------------------------------------------------------------
