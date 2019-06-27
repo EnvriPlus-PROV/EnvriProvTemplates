@@ -6,7 +6,7 @@ Author: Doron Goldfarb, Environment Agency Austria
 
 
 import sys
-from provtemplates import provconv
+import provconv
 import prov
 import getopt
 import json
@@ -66,10 +66,7 @@ bindings_dict=None
 
 if v3:
 	v3_dict=json.load(open(bindings, "r"))
-	bindings=provconv.read_binding_v3(v3_dict)
-	bindings_dict=bindings["binddict"]
-	bindings_ns=bindings["namespaces"]
-	template=provconv.set_namespaces(bindings_ns, template)
+	bindings_dict=prov.read_binding_v3(v3_dict)
 else:
 	#need to make this better, prov.read does not provide enough error info
 	bindings_doc=prov.read(bindings)
@@ -86,10 +83,6 @@ else:
 
 
 exp=provconv.instantiate_template(template, bindings_dict)
-
-for s in exp.bundles:
-	for r in s.records:
-		print repr(r)
 
 outfilename=outfile
 toks=outfilename.split(".")

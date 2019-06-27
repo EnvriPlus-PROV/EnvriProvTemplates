@@ -151,13 +151,42 @@ def setEntry(rec, regNS):
 					out=prov.QualifiedName(ns, toks[1])	
 		if "@value" in rec:
 			if "@type" in rec:
-				out=prov.Literal(rec["@value"], datatype=rec["@type"])	
+				dt=rec["@type"]
+				if isinstance(rec["@type"], basestring):
+					dt=xsd_datype_to_prov_datatype(dt, regNS)
+				out=prov.Literal(rec["@value"], datatype=dt)	
 			else:
 				out=rec["@value"]
 	except:
 		raise BindingFileException("Error parsing " + repr(rec))
 		#pass
 	return out
+
+def xsd_datype_to_prov_datatype(instring, regNS):
+	#assume that in string is ALWAYS prefixed with namespace acro which MUST be present in namespace reg
+	toks=instring.split(":")
+	uri=""
+	for ns in regNS:
+		if  ns.prefix==toks[0]:
+			uri=ns.uri
+			break
+	if uri=="":
+		return None
+	fullstring=uri+toks[1]
+	if fullstring=="http://www.w3.org/2001/XMLSchema#string":	
+		return prov.XSD_STRING
+	if fullstring=="http://www.w3.org/2001/XMLSchema#double":	
+		return prov.XSD_DOUBLE
+	if fullstring=="http://www.w3.org/2001/XMLSchema#long":	
+		return prov.XSD_LONG
+	if fullstring=="http://www.w3.org/2001/XMLSchema#integer":	
+		return prov.XSD_INT
+	if fullstring=="http://www.w3.org/2001/XMLSchema#boolean":	
+		return prov.XSD_BOOLEAN
+	if fullstring=="http://www.w3.org/2001/XMLSchema#dateTime":	
+		return prov.XSD_DATETIME
+	
+	
 
 def read_binding_v3(v3_dict):
 	"""

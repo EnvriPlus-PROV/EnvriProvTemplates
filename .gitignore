@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+*.trig
+*.bind
+
 # Distribution / packaging
 .Python
 env/
