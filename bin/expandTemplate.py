@@ -89,7 +89,7 @@ exp=provconv.instantiate_template(template, bindings_dict)
 
 for s in exp.bundles:
 	for r in s.records:
-		print repr(r)
+		print (repr(r))
 
 outfilename=outfile
 toks=outfilename.split(".")
