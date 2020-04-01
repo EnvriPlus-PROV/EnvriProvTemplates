@@ -1017,14 +1017,14 @@ def add_records(old_entity, new_entity, instance_dict):
 		
 		#we also want grouped relation attribute names
 		linkedRelAttrs=[]
-		for group in linkedGroups:
+		for fa1 in rel.formal_attributes:
 			lst=[]
-			for fa1 in rel.formal_attributes:
+			for group in linkedGroups:
 				if fa1[1] in group:
 					lst.append(fa1[0])
 			if len(lst)>0:
 				linkedRelAttrs.append(lst)
-		
+
 
 		#print repr(linkedRelAttrs)
 
@@ -1106,6 +1106,7 @@ def match(eid,mdict, node, numEntries=1):
 	Returns:
 		meid: same as input or matching value for eid key in mdict
 	'''
+	print("match(eid=%s, mdict=%s, node=%s, numEntries=%d" % (eid, mdict, node, numEntries))
 	adr=eid
 	if isinstance(adr,prov.QualifiedName):
 		lp = adr.localpart
@@ -1116,8 +1117,9 @@ def match(eid,mdict, node, numEntries=1):
 	#not optimal, need ability to provide custom namespace
 
 	# FIX NAMESPACE FOR UUID!!!!!!!!
-
-	if node and "vargen:" in str(adr) and str(adr)[:7]=="vargen:":
+	if adr in mdict:
+		madr = mdict[adr]
+	elif node and "vargen:" in str(adr) and str(adr)[:7]=="vargen:":
 		ret=None
 		for e in range(0,numEntries):
 			uid=str(uuid.uuid4())
@@ -1130,15 +1132,12 @@ def match(eid,mdict, node, numEntries=1):
 					tmp.append(mdict[adr])
 					mdict[adr]=tmp
 					tmp2=list()
-					tmp2.append(ret)
+					if ret: tmp2.append(ret)
 					ret=tmp2
 				qn=prov.QualifiedName(GLOBAL_UUID_DEF_NS, uid)
 				mdict[adr].append(qn)
 				ret.append(qn)
 		return ret
-	if adr in mdict:
-		#print("Match: ",adr)
-		madr = mdict[adr]
 	else:
 		#print("No Match: ",adr)
 		madr = eid 
