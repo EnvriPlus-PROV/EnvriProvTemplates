@@ -1106,7 +1106,6 @@ def match(eid,mdict, node, numEntries=1):
 	Returns:
 		meid: same as input or matching value for eid key in mdict
 	'''
-	print("match(eid=%s, mdict=%s, node=%s, numEntries=%d" % (eid, mdict, node, numEntries))
 	adr=eid
 	if isinstance(adr,prov.QualifiedName):
 		lp = adr.localpart
