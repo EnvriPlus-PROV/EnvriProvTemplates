@@ -13,8 +13,9 @@ try:
 	from provtemplates import provconv
 except ImportError as e:
 	try:
-		print ("Error loading provtemplatesm trying direct file import " + str(e))
-		sys.path.append('/home/cloudadm/ProvTemplate/EnvriProvTemplates/provtemplates/')
+		# Try if provconv.py is in current working directory
+		sys.path.append('.')
+		print ("Error loading provtemplates module with msg \"" + str(e) + "\", trying direct file import from cwd.")
 		import provconv
 	except ImportError as e2:
 		print ("Couldnt load provtemplate lib from file " + str(e2))
