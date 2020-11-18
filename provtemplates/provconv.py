@@ -635,7 +635,13 @@ def set_rel(new_entity,rel,idents, expAttr, linkedRelAttrs, otherAttrs):
 		#print (out)
 
 		#reorder based on original ordering
-		outordered=[out[i] for i in idx]
+
+
+		# THIS IS THE ASSOC ORDER BUG
+		#outordered=[out[i] for i in idx]
+		outordered=[x for _,x in sorted(zip(idx, out))]
+	
+
 		#create expanded relation	
 		if getIdent:
 			make_rel(new_entity, rel,idents[cnt], outordered, rel_other_attrs)
@@ -960,16 +966,17 @@ def add_records(old_entity, new_entity, instance_dict):
 						newprop.append(tuple([p, a]))
 				else:
 					newprop.append(tuple([p, props[p]]))
+			"""	
 			print (repr(newprop))
 			print (rec.bundle)
 			print (prov.Identifier(neid))
-		
+			"""
 			#DG NEW: WE MUST CORRECTLY EXPAND NESTED ATTRS HERE
 
 	
 			newRec=prov.ProvRecord(rec.bundle, prov.Identifier(neid),attributes=newprop)
 			newRec._prov_type=rec.get_type()
-			print (newRec)
+			#print (newRec)
 			new_node = new_entity.add_record(newRec)
 			#new_node = new_entity.entity(prov.Identifier(neid),other_attributes=props)
 
@@ -1017,6 +1024,10 @@ def add_records(old_entity, new_entity, instance_dict):
 		
 		#we also want grouped relation attribute names
 		linkedRelAttrs=[]
+		# I think this is the problem, we need to distinguish if linkedGroups is just one or multiple groups
+		#print ("------")
+		#print (repr(linkedGroups))
+		#print (repr(rel.formal_attributes))
 		for group in linkedGroups:
 			lst=[]
 			for fa1 in rel.formal_attributes:
@@ -1024,14 +1035,17 @@ def add_records(old_entity, new_entity, instance_dict):
 					lst.append(fa1[0])
 			if len(lst)>0:
 				linkedRelAttrs.append(lst)
-		
+		p#rint (linkedRelAttrs)	
 
 		#print repr(linkedRelAttrs)
 
 		args = rel.args
 
 		linked=False
+		#print ("ITERATING THROUGH " + str(len(linkedGroups)) + " LINKEDGROUPS")
 		for group in linkedGroups:
+			#print ("------------")
+			#print (repr(group))
 			#print "IS " + str(args[0]) + " linked with  " + str(args[1])
 			if args[0] in group and args[1] in group:
 				#print repr(group)
@@ -1086,9 +1100,27 @@ def add_records(old_entity, new_entity, instance_dict):
 		
 		
 		idents=match(rel.identifier, instance_dict, False)
+		"""
+		print ("rel -------------------------------")
+		print(repr(rel))
+		print ("idents -------------------------------")
+		print(repr(idents))
+		"""
 		log.debug(repr(idents))
+		"""
+		print ("expAttr -------------------------------")
+		print(repr(expAttr))
+		"""
 		log.debug(repr(expAttr))
+		"""
+		print ("linkedRelaTTRlinkedRelaTTRSS -------------------------------")
+		print(repr(linkedRelAttrs))
+		"""
 		log.debug(repr(linkedRelAttrs))
+		"""
+		print ("relprops_raw -------------------------------")
+		print(repr(relprops_raw))
+		"""
 		#We need to check if instances are linked    
 		new_rel = set_rel(new_entity,rel,idents, expAttr,linkedRelAttrs, relprops_raw)        
 		#new_rel = set_rel(new_entity,rel,idents, expAttr,linkedRelAttrs, otherAttr)        
@@ -1118,7 +1150,7 @@ def match(eid,mdict, node, numEntries=1):
 	# FIX NAMESPACE FOR UUID!!!!!!!!
 
 	if node and "vargen:" in str(adr) and str(adr)[:7]=="vargen:":
-		ret=None
+		#ret=None
 		for e in range(0,numEntries):
 			uid=str(uuid.uuid4())
 			if adr not in mdict:
@@ -1129,13 +1161,13 @@ def match(eid,mdict, node, numEntries=1):
 					tmp=list()
 					tmp.append(mdict[adr])
 					mdict[adr]=tmp
-					tmp2=list()
-					tmp2.append(ret)
-					ret=tmp2
+					#tmp2=list()
+					#tmp2.append(ret)
+					#ret=tmp2
 				qn=prov.QualifiedName(GLOBAL_UUID_DEF_NS, uid)
 				mdict[adr].append(qn)
-				ret.append(qn)
-		return ret
+				#ret.append(qn)
+		#return ret
 	if adr in mdict:
 		#print("Match: ",adr)
 		madr = mdict[adr]
@@ -1185,9 +1217,16 @@ def attr_match(attr_list,mdict):
 			#res=match(val_list[i],mdict, False)
 			#print ("res: " + repr(res))
 			j=i
-			#if len(key_list)>1:
-			#	j=i
-			p_dict[key_list[j]] = val_list[i]
+			val = val_list[i]
+			if i>0 and len(key_list)==1:
+				j=0
+				val=p_dict[key_list[j]]
+				if i==1:
+					tmp=list()
+					tmp.append(val)
+					val=tmp
+				val.append(val_list[i])
+			p_dict[key_list[j]] = val
 		#print("Attr dict:",p_dict)
 	return p_dict 
 #---------------------------------------------------------------

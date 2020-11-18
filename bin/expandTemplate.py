@@ -6,10 +6,18 @@ Author: Doron Goldfarb, Environment Agency Austria
 
 
 import sys
-from provtemplates import provconv
 import prov
 import getopt
 import json
+try:
+	from provtemplates import provconv
+except ImportError as e:
+	try:
+		print ("Error loading provtemplatesm trying direct file import " + str(e))
+		sys.path.append('/home/cloudadm/ProvTemplate/EnvriProvTemplates/provtemplates/')
+		import provconv
+	except ImportError as e2:
+		print ("Couldnt load provtemplate lib from file " + str(e2))
 
 def usage():
 	print ("Usage:")
