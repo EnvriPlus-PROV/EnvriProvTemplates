@@ -1035,7 +1035,7 @@ def add_records(old_entity, new_entity, instance_dict):
 					lst.append(fa1[0])
 			if len(lst)>0:
 				linkedRelAttrs.append(lst)
-		p#rint (linkedRelAttrs)	
+		#print (linkedRelAttrs)	
 
 		#print repr(linkedRelAttrs)
 
