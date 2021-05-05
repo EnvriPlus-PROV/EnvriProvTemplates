@@ -1,0 +1,2 @@
+cd /home/EAA/ProvTemplate/EnvriProvTemplates/provtemplates
+python expandTemplate.py --infile ../tests/LTER_TEST/lter_template2.trig --bindings ../tests/LTER_TEST/test_template_lter_bindings.ttl --outfile ../tests/LTER_TEST/lter_expand1.trig

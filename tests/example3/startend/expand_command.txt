@@ -1,0 +1,2 @@
+cd /home/EAA/ProvTemplate/EnvriProvTemplates/provtemplates
+python expandTemplate.py --infile ../tests/example3/startend/template3_startend.trig --bindings ../tests/example3/startend/binding3_startend_new.ttl --outfile ../tests/example3/startend/binding3_startend_expanded.trig
