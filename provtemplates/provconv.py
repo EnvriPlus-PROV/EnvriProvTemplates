@@ -1219,14 +1219,17 @@ def attr_match(attr_list,mdict):
 			j=i
 			val = val_list[i]
 			if i>0 and len(key_list)==1:
-				j=0
-				val=[x for x in props if x[0] == key_list[j]][0][1]
-				if i==1:
-					tmp=list()
-					tmp.append(val)
-					val=tmp
-				val.append(val_list[i])
-			props += [(key_list[j], val)]
+				for k in range(0,len(props)):
+					if props[k][0] == key_list[0]:
+						val = props[k][1]
+						if i==1:
+							tmp=list()
+							tmp.append(val)
+							val=tmp
+						val.append(val_list[i])
+						props[k] = (key_list[0], val)
+			else:
+				props += [(key_list[j], val)]
 		#print("Attr dict:",props)
 	return props 
 #---------------------------------------------------------------
