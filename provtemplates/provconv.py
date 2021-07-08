@@ -821,9 +821,9 @@ def prop_select(props,n):
 	'''
 	helper function to select individual values if dict value is a list
 	'''
-	nprops = {}
+	nprops = []
 	#print("Props and n: ",props,n)
-	for key,val in props.items():
+	for (key,val) in props:
 		if isinstance(val,list):
 			#print ("---------------")
 			#print (len(val))
@@ -835,9 +835,9 @@ def prop_select(props,n):
 				n=0
 			if n >= len(val):
 				raise IncorrectNumberOfBindingsForStatementVariable("Attribute " + str(key) + " has incorrect number of bindings.")
-			nprops[key] = val[n]
+			nprops += [(key, val[n])]
 		else:
-			nprops[key] = val 
+			nprops += [(key, val)]
 	return nprops        
 
 def add_records(old_entity, new_entity, instance_dict):
@@ -907,13 +907,13 @@ def add_records(old_entity, new_entity, instance_dict):
 
 		#print(repr(instance_dict))
 		props_raw = attr_match(attr,instance_dict)
-		props=dict()
+		props=[]
 		#eliminate tmpl:linked
-		for p in props_raw:
+		for (p,v) in props_raw:
 			log.debug(type(p))
 			log.debug(repr(p))
 			if "tmpl:linked"!=p._str:
-				props[p]=props_raw[p]
+				props += [(p,v)]
 	
 		"""	
 		print ("-------------------")
@@ -937,14 +937,14 @@ def add_records(old_entity, new_entity, instance_dict):
 				oa=prop_select(props,i)
 				#print (repr(oa))
 				otherAttr=list()
-				for ea1 in oa:
+				for (ea1,va1) in oa:
 					#print (ea1)
 					#ea1_match=match(ea1[1], instance_dict, False)
-					if isinstance(oa[ea1], list):
-						for a in oa[ea1]:
+					if isinstance(va1, list):
+						for a in va1:
 							otherAttr.append(tuple([ea1, a]))
 					else:
-						otherAttr.append(tuple([ea1, oa[ea1]]))
+						otherAttr.append(tuple([ea1, va1]))
 			#print (n)
 				newRec=prov.ProvRecord(rec.bundle, n,attributes=otherAttr)
 				newRec._prov_type=rec.get_type()
@@ -960,12 +960,12 @@ def add_records(old_entity, new_entity, instance_dict):
 			#print (linkedGroups)
 			#print (repr(props))
 			newprop=list()
-			for p in props:
-				if isinstance(props[p], list):
-					for a in props[p]:
+			for (p,v) in props:
+				if isinstance(v, list):
+					for a in v:
 						newprop.append(tuple([p, a]))
 				else:
-					newprop.append(tuple([p, props[p]]))
+					newprop.append(tuple([p, v]))
 			"""	
 			print (repr(newprop))
 			print (rec.bundle)
@@ -1059,15 +1059,15 @@ def add_records(old_entity, new_entity, instance_dict):
 		#print(repr(instance_dict))
 		log.debug(repr(rel.extra_attributes))
 		relprops_raw = attr_match(rel.extra_attributes, instance_dict)
-		relprops=dict()
+		relprops=[]
 		log.debug(repr(relprops_raw))
 		#eliminate tmpl:linked
-		for relp in relprops_raw:
+		for (relp,relv) in relprops_raw:
 			log.debug(type(relp))
 			log.debug(repr(relp))
 			if "tmpl:linked"!=relp._str:
-				log.debug(repr(relprops_raw[relp]))
-				props[relp]=relprops_raw[relp]
+				log.debug(repr(relv))
+				props += [(relp, relv)]
 
 
 		# WE MOVE THAT TO THE POINT WHERE WE NOW HOW MANY RELS WE HAVE FOR THE VAR PAIR
@@ -1189,7 +1189,7 @@ def attr_match(attr_list,mdict):
 		#TO DO: STARTTIME ENDTIME TIME
 
 	'''      
-	p_dict = {}
+	props = []
 	for (pn,pv)  in attr_list:
 		#print ("pn: " + repr(pn) + " pv: " + repr(pv))
 		key_new = match(pn,mdict, False)
@@ -1220,15 +1220,15 @@ def attr_match(attr_list,mdict):
 			val = val_list[i]
 			if i>0 and len(key_list)==1:
 				j=0
-				val=p_dict[key_list[j]]
+				val=[x for x in props if x[0] == key_list[j]][0][1]
 				if i==1:
 					tmp=list()
 					tmp.append(val)
 					val=tmp
 				val.append(val_list[i])
-			p_dict[key_list[j]] = val
-		#print("Attr dict:",p_dict)
-	return p_dict 
+			props += [(key_list[j], val)]
+		#print("Attr dict:",props)
+	return props 
 #---------------------------------------------------------------
 
 def instantiate_template(prov_doc,instance_dict):
