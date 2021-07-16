@@ -1,0 +1,2 @@
+cd /home/EAA/ProvTemplate/EnvriProvTemplates/provtemplates
+python expandTemplate.py --infile ../tests/example3/complexlink_vargen/template3_complexlink_vargen.trig --bindings ../tests/example3/complexlink_vargen/binding3_complexlink_error_vargen.ttl --outfile ../tests/example3/complexlink_vargen/binding3_complexlink_error_vargen_expanded.trig

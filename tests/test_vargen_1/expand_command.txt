@@ -1,0 +1,2 @@
+cd /home/EAA/ProvTemplate/EnvriProvTemplates/provtemplates
+python expandTemplate.py --infile ../tests/test_vargen_1/test_vargen.trig --bindings ../tests/test_vargen_1/test_vargen_bind.ttl --outfile ../tests/test_vargen_1/test_vargen_expanded.trig
